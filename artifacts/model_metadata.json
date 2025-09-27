@@ -1,0 +1,37 @@
+{
+  "model_version": "v1.0",
+  "saved_at": "2025-09-27T16:29:12.985468",
+  "model_class": "<class 'xgboost.sklearn.XGBClassifier'>",
+  "features": [
+    "type",
+    "paperless_billing",
+    "payment_method",
+    "monthly_charges",
+    "total_charges",
+    "tenure_days",
+    "senior_citizen",
+    "partner",
+    "dependents",
+    "internet_service",
+    "online_security",
+    "online_backup",
+    "device_protection",
+    "tech_support",
+    "streaming_tv",
+    "streaming_movies",
+    "multiple_lines"
+  ],
+  "best_params": {
+    "model__colsample_bytree": 0.8,
+    "model__learning_rate": 0.1,
+    "model__max_depth": 5,
+    "model__n_estimators": 50,
+    "model__subsample": 0.8
+  },
+  "metrics": {
+    "test_accuracy": 0.843860894251242,
+    "test_roc_auc": 0.8798806479113384,
+    "test_f1": 0.6686746987951807
+  },
+  "notes": "Pipeline contains ColumnTransformer (OneHotEncoder/StandardScaler) + XGBClassifier"
+}
