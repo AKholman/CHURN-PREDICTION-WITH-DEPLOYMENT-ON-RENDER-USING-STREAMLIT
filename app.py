@@ -15,11 +15,10 @@ def load_model():
 pipeline, meta = load_model()
 expected_features = meta['features']
 
-st.title("Churn prediction (XGBoost)")
+st.title("Churn Prediction (XGBoost)")
 
 # Example: simple form for a single prediction
 with st.form("predict_form"):
-    
     # Numeric features
     monthly_charges = st.number_input("Monthly Charges", min_value=0.0, value=50.0)
     total_charges = st.number_input("Total Charges", min_value=0.0, value=600.0)
@@ -33,7 +32,16 @@ with st.form("predict_form"):
         "Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"
     ])
     internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
-    
+    partner = st.selectbox("Partner", ["Yes", "No"])
+    dependents = st.selectbox("Dependents", ["Yes", "No"])
+    online_security = st.selectbox("Online Security", ["Yes", "No"])
+    online_backup = st.selectbox("Online Backup", ["Yes", "No"])
+    device_protection = st.selectbox("Device Protection", ["Yes", "No"])
+    tech_support = st.selectbox("Tech Support", ["Yes", "No"])
+    streaming_tv = st.selectbox("Streaming TV", ["Yes", "No"])
+    streaming_movies = st.selectbox("Streaming Movies", ["Yes", "No"])
+    multiple_lines = st.selectbox("Multiple Lines", ["Yes", "No"])
+
     submitted = st.form_submit_button("Predict")
 
 if submitted:
@@ -41,22 +49,32 @@ if submitted:
         "type": type_input,
         "paperless_billing": paperless_billing,
         "payment_method": payment_method,
-        "internet_service": internet_service,
         "monthly_charges": monthly_charges,
         "total_charges": total_charges,
         "tenure_days": tenure_days,
-        "senior_citizen": senior_citizen
+        "senior_citizen": senior_citizen,
+        "partner": partner,
+        "dependents": dependents,
+        "internet_service": internet_service,
+        "online_security": online_security,
+        "online_backup": online_backup,
+        "device_protection": device_protection,
+        "tech_support": tech_support,
+        "streaming_tv": streaming_tv,
+        "streaming_movies": streaming_movies,
+        "multiple_lines": multiple_lines
     }
 
     df = pd.DataFrame([input_dict])
 
-    # Ensure all expected features exist
-    df = df.reindex(columns=expected_features)
-
-    # Define safe defaults for categorical features
-    categorical_defaults = {
+    # Defaults for missing columns (safe values)
+    defaults = {
+        "type": "Month-to-month",
+        "paperless_billing": "Yes",
+        "payment_method": "Electronic check",
         "partner": "No",
         "dependents": "No",
+        "internet_service": "DSL",
         "online_security": "No",
         "online_backup": "No",
         "device_protection": "No",
@@ -64,21 +82,30 @@ if submitted:
         "streaming_tv": "No",
         "streaming_movies": "No",
         "multiple_lines": "No",
+        "monthly_charges": 0.0,
+        "total_charges": 0.0,
+        "tenure_days": 0,
+        "senior_citizen": 0
     }
 
+    for col in expected_features:
+        if col not in df.columns:
+            df[col] = defaults[col]
 
-    # Fill categorical columns
-    for col in df.select_dtypes(include=["object"]).columns:
-        default_val = categorical_defaults.get(col, "Unknown")
-        df[col] = df[col].fillna(default_val)
+    # Ensure column order and types
+    df = df[expected_features]
+    categorical_cols = [
+        "type", "paperless_billing", "payment_method", "partner", "dependents",
+        "internet_service", "online_security", "online_backup",
+        "device_protection", "tech_support", "streaming_tv",
+        "streaming_movies", "multiple_lines"
+    ]
+    df[categorical_cols] = df[categorical_cols].astype(str)
 
-    # Fill numeric columns
-    for col in df.select_dtypes(include=[np.number]).columns:
-        df[col] = df[col].fillna(0)
+    st.write("DF before prediction:", df)
+    st.write("DF dtypes:", df.dtypes)
 
-    # Now safe to predict
+    # Prediction
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
-
-    threshold = 0.5
-    st.write("Predicted churn:", "Yes" if proba >= threshold else "No")
+    st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
