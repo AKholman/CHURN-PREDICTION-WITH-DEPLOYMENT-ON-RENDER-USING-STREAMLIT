@@ -52,7 +52,8 @@ if submitted:
 
     for col in expected_features:
         if col not in df.columns:
-            if col in ["type", "paperless_billing", "payment_method", "internet_service"]:
+            if col in ["type", "paperless_billing", "payment_method", "internet_service",
+                       "partner", "dependents", "online_security", "online_backup"]:
                 df[col] = "Unknown"
             else:
                 df[col] = 0
@@ -60,7 +61,9 @@ if submitted:
     df = df[expected_features]
 
     # Force categoricals to str
-    categorical_cols = ["type", "paperless_billing", "payment_method", "internet_service"]
+    categorical_cols = ["type", "paperless_billing", "payment_method", "internet_service",
+        "partner", "dependents", "online_security", "online_backup"
+    ]
     df[categorical_cols] = df[categorical_cols].astype(str)
 
     st.write("DF before prediction:", df)
@@ -68,5 +71,4 @@ if submitted:
 
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
-    threshold = 0.5
-    st.write("Predicted churn:", "Yes" if proba >= threshold else "No")
+    st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
