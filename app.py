@@ -20,7 +20,7 @@ st.title("Churn prediction (XGBoost)")
 # Example: simple form for a single prediction
 with st.form("predict_form"):
     
- # Numeric features
+    # Numeric features
     monthly_charges = st.number_input("Monthly Charges", min_value=0.0, value=50.0)
     total_charges = st.number_input("Total Charges", min_value=0.0, value=600.0)
     tenure_days = st.number_input("Tenure Days", min_value=0, max_value=5000, value=365)
@@ -49,19 +49,24 @@ if submitted:
     }
 
     df = pd.DataFrame([input_dict])
-    df = df.reindex(columns=expected_features)
 
-# Fill missing categoricals with "Unknown", numerics with 0
-    for col in df.columns:
-        if df[col].dtype == object:
-            df[col] = df[col].fillna("Unknown")
-        else:
-            df[col] = df[col].fillna(0)
+    for col in expected_features:
+        if col not in df.columns:
+            if col in ["type", "paperless_billing", "payment_method", "internet_service"]:
+                df[col] = "Unknown"
+            else:
+                df[col] = 0
+
+    df = df[expected_features]
+
+    # Force categoricals to str
+    categorical_cols = ["type", "paperless_billing", "payment_method", "internet_service"]
+    df[categorical_cols] = df[categorical_cols].astype(str)
+
+    st.write("DF before prediction:", df)
+    st.write("DF dtypes:", df.dtypes)
 
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
-    st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
-
-    # optional: thresholded prediction
     threshold = 0.5
     st.write("Predicted churn:", "Yes" if proba >= threshold else "No")
