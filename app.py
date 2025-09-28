@@ -49,7 +49,14 @@ if submitted:
     }
 
     df = pd.DataFrame([input_dict])
-    df = df.reindex(columns=expected_features, fill_value=np.nan)  # ensure correct order
+    df = df.reindex(columns=expected_features)
+
+# Fill missing categoricals with "Unknown", numerics with 0
+    for col in df.columns:
+        if df[col].dtype == object:
+            df[col] = df[col].fillna("Unknown")
+        else:
+            df[col] = df[col].fillna(0)
 
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
