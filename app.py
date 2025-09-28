@@ -20,30 +20,42 @@ st.title("Churn prediction (XGBoost)")
 # Example: simple form for a single prediction
 with st.form("predict_form"):
     
-    # numeric features
-    tenure = st.number_input("tenure_months", min_value=0, max_value=200, value=12)
-    monthly_charges = st.number_input("monthly_charges", min_value=0.0, value=50.0)
-    total_charges = st.number_input("total_charges", min_value=0.0, value=600.0)
-    tenure_days = st.number_input("tenure_days", min_value=0, max_value=5000, value=365)
+ # Numeric features
+    monthly_charges = st.number_input("Monthly Charges", min_value=0.0, value=50.0)
+    total_charges = st.number_input("Total Charges", min_value=0.0, value=600.0)
+    tenure_days = st.number_input("Tenure Days", min_value=0, max_value=5000, value=365)
+    senior_citizen = st.selectbox("Senior Citizen", [0, 1])
+
+    # Categorical features
+    type_input = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
+    paperless_billing = st.selectbox("Paperless Billing", ["Yes", "No"])
+    payment_method = st.selectbox("Payment Method", [
+        "Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"
+    ])
+    internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
     
     submitted = st.form_submit_button("Predict")
 
 if submitted:
     input_dict = {
+    submitted = st.form_submit_button("Predict")
+
+if submitted:
+    input_dict = {
+        "type": type_input,
+        "paperless_billing": paperless_billing,
         "payment_method": payment_method,
+        "internet_service": internet_service,
         "monthly_charges": monthly_charges,
         "total_charges": total_charges,
         "tenure_days": tenure_days,
-  
-        # fill the rest with default values or expose them in UI
+        "senior_citizen": senior_citizen
     }
+
     df = pd.DataFrame([input_dict])
+    df = df.reindex(columns=expected_features, fill_value=np.nan)  # ensure correct order
 
-    # Ensure correct column order and add missing columns as NaN
-    df = df.reindex(columns=expected_features, fill_value=np.nan)
-
-    # Predict
-    proba = pipeline.predict_proba(df)[:, 1][0] # probability of class 1 (churn)
+    proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
     st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
 
