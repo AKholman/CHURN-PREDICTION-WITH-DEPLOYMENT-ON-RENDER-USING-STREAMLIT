@@ -23,33 +23,34 @@ tab1, tab2, tab3 = st.tabs(["Input", "Prediction", "Feature Info"])
 with tab1:
     st.header("Customer Information")
     # Use columns for layout
-    col1, col2 = st.columns(2)
+    with st.form("predict_form"):
+        col1, col2 = st.columns(2)
 
-    with col1:
-        monthly_charges = st.slider("Monthly Charges", 0.0, 200.0, 50.0)
-        total_charges = st.slider("Total Charges", 0.0, 5000.0, 600.0)
-        tenure_days = st.slider("Tenure Days", 0, 5000, 365)
-        senior_citizen = st.radio("Senior Citizen", ["No", "Yes"])
+        with col1:
+            monthly_charges = st.slider("Monthly Charges", 0.0, 200.0, 50.0)
+            total_charges = st.slider("Total Charges", 0.0, 5000.0, 600.0)
+            tenure_days = st.slider("Tenure Days", 0, 5000, 365)
+            senior_citizen = st.radio("Senior Citizen", ["No", "Yes"])
 
-        type_input = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
-        paperless_billing = st.radio("Paperless Billing", ["Yes", "No"])
-        payment_method = st.selectbox("Payment Method", [
-            "Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"
-        ])
-        internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
+            type_input = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
+            paperless_billing = st.radio("Paperless Billing", ["Yes", "No"])
+            payment_method = st.selectbox("Payment Method", [
+                "Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"
+            ])
+            internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
 
-    with col2:
-        partner = st.radio("Partner", ["Yes", "No"])
-        dependents = st.radio("Dependents", ["Yes", "No"])
-        online_security = st.radio("Online Security", ["Yes", "No"])
-        online_backup = st.radio("Online Backup", ["Yes", "No"])
-        device_protection = st.radio("Device Protection", ["Yes", "No"])
-        tech_support = st.radio("Tech Support", ["Yes", "No"])
-        streaming_tv = st.radio("Streaming TV", ["Yes", "No"])
-        streaming_movies = st.radio("Streaming Movies", ["Yes", "No"])
-        multiple_lines = st.radio("Multiple Lines", ["Yes", "No"])
+        with col2:
+            partner = st.radio("Partner", ["Yes", "No"])
+            dependents = st.radio("Dependents", ["Yes", "No"])
+            online_security = st.radio("Online Security", ["Yes", "No"])
+            online_backup = st.radio("Online Backup", ["Yes", "No"])
+            device_protection = st.radio("Device Protection", ["Yes", "No"])
+            tech_support = st.radio("Tech Support", ["Yes", "No"])
+            streaming_tv = st.radio("Streaming TV", ["Yes", "No"])
+            streaming_movies = st.radio("Streaming Movies", ["Yes", "No"])
+            multiple_lines = st.radio("Multiple Lines", ["Yes", "No"])
 
-    submitted = st.form_submit_button("Predict")
+        submitted = st.form_submit_button("Predict")
 
 with tab2:
     if submitted:
