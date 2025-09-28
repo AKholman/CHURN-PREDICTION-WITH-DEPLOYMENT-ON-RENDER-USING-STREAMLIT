@@ -50,25 +50,35 @@ if submitted:
 
     df = pd.DataFrame([input_dict])
 
-    for col in expected_features:
-        if col not in df.columns:
-            if col in ["type", "paperless_billing", "payment_method", "internet_service",
-                       "partner", "dependents", "online_security", "online_backup"]:
-                df[col] = "Unknown"
-            else:
-                df[col] = 0
+    # Ensure all expected features exist
+    df = df.reindex(columns=expected_features)
 
-    df = df[expected_features]
+    # Define safe defaults for categorical features
+    categorical_defaults = {
+        "partner": "No",
+        "dependents": "No",
+        "online_security": "No",
+        "online_backup": "No",
+        "device_protection": "No",
+        "tech_support": "No",
+        "streaming_tv": "No",
+        "streaming_movies": "No",
+        "multiple_lines": "No",
+    }
 
-    # Force categoricals to str
-    categorical_cols = ["type", "paperless_billing", "payment_method", "internet_service",
-        "partner", "dependents", "online_security", "online_backup"
-    ]
-    df[categorical_cols] = df[categorical_cols].astype(str)
 
-    st.write("DF before prediction:", df)
-    st.write("DF dtypes:", df.dtypes)
+    # Fill categorical columns
+    for col in df.select_dtypes(include=["object"]).columns:
+        default_val = categorical_defaults.get(col, "Unknown")
+        df[col] = df[col].fillna(default_val)
 
+    # Fill numeric columns
+    for col in df.select_dtypes(include=[np.number]).columns:
+        df[col] = df[col].fillna(0)
+
+    # Now safe to predict
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
-    st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
+
+    threshold = 0.5
+    st.write("Predicted churn:", "Yes" if proba >= threshold else "No")
