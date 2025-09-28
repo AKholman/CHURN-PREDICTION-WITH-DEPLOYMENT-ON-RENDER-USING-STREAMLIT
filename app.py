@@ -38,7 +38,7 @@ with st.form("predict_form"):
 
 if submitted:
     input_dict = {
-    submitted = st.form_submit_button("Predict")
+    submitted = st.form_submit_button("Predict")}
 
 if submitted:
     input_dict = {
