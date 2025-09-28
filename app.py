@@ -109,3 +109,4 @@ if submitted:
     proba = pipeline.predict_proba(df)[:, 1][0]
     st.metric("Churn probability", f"{proba:.2%}")
     st.write("Predicted churn:", "Yes" if proba >= 0.5 else "No")
+    
