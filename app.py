@@ -15,7 +15,7 @@ def load_model():
 pipeline, meta = load_model()
 expected_features = meta['features']
 
-st.title("💡 Churn Prediction Dashboard (XGBoost)")
+st.title("💡 Churn Prediction Dashboard")
 
 # ---- Tabs ----
 tab1, tab2, tab3 = st.tabs(["Input", "Prediction", "Feature Info"])
