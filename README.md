@@ -53,7 +53,10 @@ Models were trained using cross-validation and hyperparameter tuning (GridSearch
 
 The XGBoost model is deployed as a **Streamlit web application** on Render. Users can input customer features via an interactive form and receive churn probability in real-time.
 
-<pre> ## Folder Structure ```bash churn-prediction-app/ │ ├── app.py # Streamlit app for deployment ├── requirements.txt # Python dependencies ├── README.md # Project documentation │ ├── notebooks/ │ └── churn_modeling.ipynb │ ├── data/ │ ├── contract.csv │ ├── internet.csv │ ├── personal.csv │ └── phone.csv │ ├── artifacts/ │ ├── model_pipeline.joblib │ └── model_metadata.json │ ├── images/ │ ├── roc_auc_xgboost.png │ ├── app_dashboard_1.png │ └── app_dashboard_2.png │ └── .gitignore ``` </pre>
+<pre> 
+## Folder Structure 
+```bash churn-prediction-app/ │ ├── app.py # Streamlit app for deployment ├── requirements.txt # Python dependencies ├── README.md # Project documentation │ ├── notebooks/ │ └── churn_modeling.ipynb │ ├── data/ │ ├── contract.csv │ ├── internet.csv │ ├── personal.csv │ └── phone.csv │ ├── artifacts/ │ ├── model_pipeline.joblib │ └── model_metadata.json │ ├── images/ │ ├── roc_auc_xgboost.png │ ├── app_dashboard_1.png │ └── app_dashboard_2.png │ └── .gitignore ```
+</pre>
 
 
 ![App Screenshot](images/app_dashboard_1.png)
