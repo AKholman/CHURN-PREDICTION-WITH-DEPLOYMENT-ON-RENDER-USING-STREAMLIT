@@ -81,7 +81,7 @@ churn-prediction-app/
 │   └── app_dashboard_2.png     
 │
 └── .gitignore                  
-
+'''
 
 
 ![App Screenshot](images/app_dashboard_1.png)
