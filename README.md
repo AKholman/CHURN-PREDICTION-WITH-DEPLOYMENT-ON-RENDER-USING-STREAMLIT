@@ -5,6 +5,16 @@
 In this project, we aim to predict customer churn for the telecom operator Interconnect using machine learning. The company wants to forecast which users are planning to leave and offer them promotional codes and special plan options. 
 
 We start by preprocessing and integrating four datasets, preparing them for exploratory data analysis (EDA). Through feature engineering, we define the key input features and the target variable for a supervised binary classification task.
+---
+
+## Data Preprocessing & Feature Engineering
+
+- Combined 4 raw datasets (contract, internet, personal, phone) using `customer_id`.  
+- Handled missing values and categorical variables.  
+- One-Hot Encoding (OHE) applied to categorical features.  
+- StandardScaler applied to numerical features.  
+
+---
 
 To build the churn prediction model, we trained and evaluated several classification algorithms:
 
@@ -17,15 +27,6 @@ To build the churn prediction model, we trained and evaluated several classifica
 Model performance was evaluated using key metrics, including accuracy, ROC-AUC, and F1 score. Hyperparameter tuning aimed to achieve a ROC-AUC above 0.75. The best-performing classifier (XGBoost) was selected to reliably predict customer churn for Interconnect.
 
 Finally, the selected model was used to build a web application using Streamlit and deployoed on Render, following principles of machine learning system design.
-
----
-
-## Data Preprocessing & Feature Engineering
-
-- Combined 4 raw datasets (contract, internet, personal, phone) using `customer_id`.  
-- Handled missing values and categorical variables.  
-- One-Hot Encoding (OHE) applied to categorical features.  
-- StandardScaler applied to numerical features.  
 
 ---
 
