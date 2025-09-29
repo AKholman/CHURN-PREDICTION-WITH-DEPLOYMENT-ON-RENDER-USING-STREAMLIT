@@ -88,5 +88,5 @@ churn-prediction-app/
 ![App Screenshot](images/app_dashboard_2.png)
 
 **Live App URL:** [https://churn-prediction-with-deployment-on.onrender.com]
-
+⚠️ This app is deployed on Render free tier. It may be paused to save resources. Please contact me if you’d like me to reactivate it.
 
