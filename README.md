@@ -53,7 +53,7 @@ Models were trained using cross-validation and hyperparameter tuning (GridSearch
 
 The XGBoost model is deployed as a **Streamlit web application** on Render. Users can input customer features via an interactive form and receive churn probability in real-time.
 
-
+![App Screenshot](images/app_dashboard_1.png)
 ![App Screenshot](images/app_dashboard_2.png)
 
 **Live App URL:** [https://churn-prediction-with-deployment-on.onrender.com]
